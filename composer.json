@@ -1,0 +1,35 @@
+{
+  "name": "phpcuba/phpcuba",
+  "description": "More functions for PHP",
+  "keywords": [
+    "php",
+    "helpers",
+	"functions"
+  ],
+  "homepage": "https://phpcuba.org",
+  "version": "0.1",
+  "license": [
+    "GPL-3.0-or-later"
+  ],
+  "authors": [
+    {
+      "name": "Rafa Rodriguez",
+      "email": "rafageist@hotmail.com",
+      "homepage": "https://rafageist.github.io",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "files": [
+      "more-functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "files": [
+      "more-functions.php"
+    ]
+  }
+}
