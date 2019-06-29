@@ -32,7 +32,7 @@ class Person {
   	
     var_dump(get_object_vars($this);
   	
-    return PHPCuba\ObjectHelper::getPublicVars($this);
+    return PHPCuba\Objects::getPublicVars($this);
   }
 }
 
