@@ -10,9 +10,6 @@ composer require phpcuba\phpcuba;
 
 ## Usage
 ```php
-
-use PHPCuba;
-
 $result = PHPCuba\{some class here}::{some function here}(...);
 ```
 
@@ -25,8 +22,6 @@ object because `get_object_vars()` have access to private properties
 
 ```php
 
-use phpcuba;
-
 class Person {
   public $name = "Peter";
   public $age = 12;
@@ -37,7 +32,7 @@ class Person {
   	
     var_dump(get_object_vars($this);
   	
-    return ObjectHelper::getPublicVars($this);
+    return PHPCuba\ObjectHelper::getPublicVars($this);
   }
 }
 
