@@ -15,7 +15,7 @@ foreach ($sections as $section) {
   if ($section != "." && $section != ".." && is_dir("{$base_dir}$section")) {
     $functions = scandir("{$base_dir}$section/");
     foreach ($functions as $function) {
-      if ($function != '.' && $function != ".." && !is_dir("{$base_dir}$section/$function")) {
+      if (!is_dir("{$base_dir}$section/$function") && strpos($function, ".php") !== false) {
         $function = str_replace(".php", "", $function);
         $code = "if (!function_exists('$function'))\n" .
           "include __DIR__.\"/functions/$section/$function.php\";\n" .
