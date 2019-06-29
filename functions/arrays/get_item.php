@@ -1,6 +1,6 @@
 <?php
 
-namespace phpcuba;
+namespace phpcuba\arrays;
 
 /**
  * Get item from array, checking if exists, returning default
@@ -11,7 +11,7 @@ namespace phpcuba;
  *
  * @return mixed
  */
-function array_get_item($array, $index, $default = null)
+function get_item($array, $index, $default = null)
 {
   if (!is_array($index)) {
     $index = [$index];

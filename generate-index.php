@@ -17,10 +17,7 @@ foreach ($sections as $section) {
     foreach ($functions as $function) {
       if (!is_dir("{$base_dir}$section/$function") && strpos($function, ".php") !== false) {
         $function = str_replace(".php", "", $function);
-        $code = "if (!function_exists('$function'))\n" .
-          "include __DIR__.\"/functions/$section/$function.php\";\n" .
-          "else phpcuba\\error(100, \"LOADING: Function $function() already exists\");\n\n";
-
+        $code = "include __DIR__.\"/functions/$section/$function.php\";\n";
         fputs($f, $code);
       }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace phpcuba;
+namespace phpcuba\objects;
 
 /**
  * Simple function for get public vars of $this
@@ -12,7 +12,7 @@ namespace phpcuba;
  *   protected $secret = "123";
  *
  *   public function getPublicProperties() {
- *     return get_object_public_vars($this);
+ *     return phpcuba\objects\get_public_vars($this);
  *   }
  * }
  *
@@ -26,7 +26,7 @@ namespace phpcuba;
  *
  */
 
-function get_object_public_vars($object)
+function get_public_vars($object)
 {
   return get_object_vars($object);
 }

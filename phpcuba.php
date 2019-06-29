@@ -25,27 +25,7 @@ namespace phpcuba;
  * @see https://phpcuba.org
  */
 
-!defined('PHPCUBA_ERRORS_DEPOSIT') and define('PHPCUBA_ERRORS_DEPOSIT', 'phpcuba_errors');
-
-/**
- * Record errors in global var
- *
- * @param $code
- * @param $message
- */
-function error($code, $message)
-{
-  if (!isset($GLOBALS[PHPCUBA_ERRORS_DEPOSIT])) {
-    $GLOBALS[PHPCUBA_ERRORS_DEPOSIT] = [];
-  }
-
-  $GLOBALS[PHPCUBA_ERRORS_DEPOSIT][] = [
-    "timestamp" => date("Y-m-d h:i:s"),
-    "message"   => $message,
-    "code" => $code
-  ];
-}
+if (!file_exists(__DIR__."/phpcuba-index.php"))
+  include __DIR__."/generate-index.php";
 
 include __DIR__."/phpcuba-index.php";
-
-// EOF

@@ -1,6 +1,6 @@
 <?php
 
-namespace phpcuba;
+namespace phpcuba\objects;
 
 /**
  * Complete object/array properties

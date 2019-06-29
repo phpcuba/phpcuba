@@ -1,6 +1,6 @@
 <?php
 
-namespace phpcuba;
+namespace phpcuba\strings;
 
 /**
  * Clear string
@@ -15,7 +15,7 @@ namespace phpcuba;
  *
  * @author @rafageist
  */
-function str_clear($name, $chars, $direction = true, $case_sensitive = true)
+function clear($name, $chars, $direction = true, $case_sensitive = true)
 {
   $l = strlen($name);
   $new_str = '';
