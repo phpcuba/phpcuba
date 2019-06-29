@@ -11,8 +11,6 @@ composer require phpcuba\phpcuba;
 ## Usage
 ```php
 
-include "phpcuba.php";
-
 $result = phpcuba\{some function here}(...);
 
 ```
