@@ -2,6 +2,8 @@
 
 include "../phpcuba.php";
 
+use function phpcuba\objects\get_public_vars;
+
 class Person
 {
 
@@ -16,16 +18,6 @@ class Person
   protected $secret = "123";
 
   /**
-   * This method return the list of public properties
-   *
-   * @return array
-   */
-  public function getPublicProperties()
-  {
-    return phpcuba\get_object_public_vars($this);
-  }
-
-  /**
    * Test
    */
   public function test()
@@ -34,7 +26,7 @@ class Person
     var_dump(get_object_vars($this));
 
     // show only all properties
-    var_dump(phpcuba\get_object_public_vars($this));
+    var_dump(get_public_vars($this));
   }
 }
 
