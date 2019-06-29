@@ -23,13 +23,13 @@
     "php": ">=7.0.0"
   },
   "autoload": {
-    "files": [
-      "phpcuba.php"
+    "classmap": [
+      "classes/"
     ]
   },
   "autoload-dev": {
-    "files": [
-      "phpcuba.php"
+    "classmap": [
+      "classes/"
     ]
   }
 }

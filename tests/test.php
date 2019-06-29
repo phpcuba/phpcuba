@@ -2,7 +2,7 @@
 
 include "../phpcuba.php";
 
-use function phpcuba\objects\get_public_vars;
+use phpcuba\ObjectHelper;
 
 class Person
 {
@@ -26,7 +26,7 @@ class Person
     var_dump(get_object_vars($this));
 
     // show only all properties
-    var_dump(get_public_vars($this));
+    var_dump(ObjectHelper::get_public_vars($this));
   }
 }
 

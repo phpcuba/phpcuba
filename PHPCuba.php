@@ -1,6 +1,6 @@
 <?php
 
-namespace phpcuba;
+namespace PHPCuba;
 
 /**
  * Cuban PHP Community
@@ -24,8 +24,20 @@ namespace phpcuba;
  * @see https://t.me/phpcuba
  * @see https://phpcuba.org
  */
+class PHPCuba
+{
 
-if (!file_exists(__DIR__."/functions/index.php"))
-  include __DIR__."/generator.php";
+  private static $version = "0.0.2";
 
-include __DIR__."/functions/index.php";
+  /**
+   * Version of lib
+   *
+   * @return string
+   * @author @rafageist
+   */
+  static function version()
+  {
+    return self::$version;
+  }
+
+}
