@@ -26,6 +26,6 @@ namespace phpcuba;
  */
 
 if (!file_exists(__DIR__."/phpcuba-index.php"))
-  include __DIR__."/generate-index.php";
+  include __DIR__."/generator.php";
 
 include __DIR__."/phpcuba-index.php";

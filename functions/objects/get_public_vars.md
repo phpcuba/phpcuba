@@ -1,26 +1,3 @@
-# More functions for PHP
-
-Strengthen PHP with new functions.
-
-## Installation
-
-```
-composer require phpcuba\phpcuba;
-```
-
-## Usage
-```php
-
-$result = phpcuba\{some function here}(...);
-
-```
-
-## Functions reference
-
-<reference>
-
-### phpcuba \ objects \ get_public_vars()
-
 **Description**
 
 Simple function for get public vars of $this or another 
@@ -43,10 +20,3 @@ class Person {
 $person = new Person();
 var_dump($person->getPublicProperties());
 ```
-</reference>
-
-## Authors
-
-Cuban PHP Community [https://phpcuba.org]
-
-Enjoy!
