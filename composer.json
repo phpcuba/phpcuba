@@ -7,8 +7,7 @@
 	"functions"
   ],
   "homepage": "https://phpcuba.org",
-  "version": "0.0.1",
-  "minimum-stability" : "dev",
+  "version": "1.0",
   "license": [
     "GPL-3.0-or-later"
   ],
@@ -25,12 +24,12 @@
   },
   "autoload": {
     "files": [
-      "more-functions.php"
+      "phpcuba.php"
     ]
   },
   "autoload-dev": {
     "files": [
-      "more-functions.php"
+      "phpcuba.php"
     ]
   }
 }

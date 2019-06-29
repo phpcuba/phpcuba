@@ -1,5 +1,7 @@
 <?php
 
+namespace phpcuba;
+
 /**
  * Complete object/array properties
  *

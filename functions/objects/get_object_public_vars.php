@@ -1,5 +1,7 @@
 <?php
 
+namespace phpcuba;
+
 /**
  * Simple function for get public vars of $this
  *
