@@ -1,6 +1,7 @@
 {
   "name": "phpcuba/phpcuba",
   "description": "More functions for PHP",
+  "version": "0.0.1",
   "keywords": [
     "php",
     "helpers",
