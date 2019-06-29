@@ -2,7 +2,7 @@
 
 namespace PHPCuba;
 
-class ObjectHelper
+class Objects
 {
 
   /**

@@ -2,7 +2,7 @@
 
 namespace PHPCuba;
 
-class ArrayHelper
+class Arrays
 {
 
   /**
@@ -19,7 +19,7 @@ class ArrayHelper
 
   public static function cop(&$source, $complement, $level = 0)
   {
-    return ObjectHelper::cop($source, $complement, $level);
+    return Objects::cop($source, $complement, $level);
   }
 
   /**
