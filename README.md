@@ -35,7 +35,7 @@ class Person {
 
   public function getPublicProperties() {
   	
-  	var_dump(get_object_vars($this);
+    var_dump(get_object_vars($this);
   	
     return ObjectHelper::getPublicVars($this);
   }
