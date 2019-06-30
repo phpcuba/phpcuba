@@ -100,4 +100,22 @@ class Objects
 
     return $source;
   }
+
+  /**
+   * Cast object to class
+   *
+   * @param $instance
+   * @param $class
+   * @autor @rafageist
+   *
+   * @return mixed
+   */
+  public static function cast($instance, $class) {
+    return unserialize(sprintf(
+      'O:%d:"%s"%s',
+      strlen($class),
+      $class,
+      strstr(strstr(serialize($instance), '"'), ':')
+    ));
+  }
 }

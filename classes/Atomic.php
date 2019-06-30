@@ -5,6 +5,8 @@ namespace PHPCuba;
 class Atomic
 {
 
+  static $instance = null;
+
   private $value = null;
 
   /**
@@ -15,6 +17,18 @@ class Atomic
   public function __construct($value = null)
   {
     $this->set($value);
+  }
+
+  /**
+   * Factory
+   *
+   * @param null $value
+   *
+   * @return self
+   */
+  public static function getInstance($value = null): self
+  {
+    return new self($value);
   }
 
   /**

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PHPCuba;
 
@@ -13,9 +13,13 @@ use Exception;
  */
 class Text extends Atomic
 {
+
   const ERR_TEXT_IS_NULL = 'Text is null';
+
   const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
   const LOWER_ALPHA_NUMERIC = '0123456789abcdefghijklmnopqrstuvwxyz';
+
   /**
    * @var int
    */
@@ -49,17 +53,6 @@ class Text extends Atomic
   }
 
   /**
-   *
-   * @param string $value
-   *
-   * @return \PHPCuba\Text
-   */
-  public static function instance(string $value): self
-  {
-    return new self($value);
-  }
-
-  /**
    * To string
    *
    * @return string
@@ -77,6 +70,21 @@ class Text extends Atomic
   public function asString(): string
   {
     return $this->__toString();
+  }
+
+  /**
+   * Apply callable function to value
+   *
+   * @param $callable
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function apply($callable)
+  {
+    $this->set($callable($this->get()));
+
+    return $this;
   }
 
   /**
@@ -154,10 +162,7 @@ class Text extends Atomic
    */
   public function endsWith(string $suffix): bool
   {
-    $index = $this->indexOf($suffix);
-    $suffixLength = strlen($suffix);
-
-    return ($index === $this->length - $suffixLength);
+    return substr($this->get(), 0, 0 - strlen($suffix)) === $suffix;
   }
 
   /**
@@ -179,6 +184,7 @@ class Text extends Atomic
   public function append(string $text): self
   {
     $this->set($this->get() . $text);
+
     return $this;
   }
 
@@ -193,6 +199,7 @@ class Text extends Atomic
   public function prepend(string $text): self
   {
     $this->set($text . $this->get());
+
     return $this;
   }
 
@@ -212,6 +219,7 @@ class Text extends Atomic
     }
 
     $this->set(substr($this->get(), $start, $length));
+
     return $this;
   }
 
@@ -226,6 +234,11 @@ class Text extends Atomic
   public function suffix(int $suffixLength): self
   {
     return $this->cutString($this->length() - $suffixLength);
+  }
+
+  static function instance($value = null): self
+  {
+    return Objects::cast(parent::getInstance($value), self::class);
   }
 
   /**
@@ -265,7 +278,7 @@ class Text extends Atomic
   public function stripPrefix(string $prefix): self
   {
     if ($this->startsWith($prefix)) {
-     return $this->cutString(strlen($prefix));
+      return $this->cutString(strlen($prefix));
     }
 
     return $this;
@@ -308,13 +321,15 @@ class Text extends Atomic
     $result = $this;
 
     if ($this->endsWith($suffix)) {
-      $result = substr($this->get(), 0,$this->length - strlen($suffix));
+      $result = substr($this->get(), 0, 0 - strlen($suffix));
     }
 
     return $result;
   }
 
   /**
+   * Ensure with suffix
+   *
    * @param string $suffix
    *
    * @return \PHPCuba\Text
@@ -322,20 +337,32 @@ class Text extends Atomic
    */
   public function ensureSuffix(string $suffix): self
   {
-    $result = $this;
-
     if (!$this->endsWith($suffix)) {
-      $result = $this->append($suffix);
+      $this->append($suffix);
     }
 
-    return $result;
+    return $this;
   }
 
+  /**
+   * Trim
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
   public function trim(): self
   {
-    return self::instance(trim($this->get()));
+    $this->set(trim($this->get()));
+
+    return $this;
   }
 
+  /**
+   * CSV to array
+   *
+   * @return array
+   * @throws \Exception
+   */
   public function csvToArray(): array
   {
     return array_map(
@@ -346,9 +373,15 @@ class Text extends Atomic
     );
   }
 
+  /**
+   * Decode from base64
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
   public function decodeBase64(): self
   {
-    return self::instance(base64_decode($this->get()));
+    return $this->append('base64_decode');
   }
 
   /**
@@ -409,36 +442,45 @@ class Text extends Atomic
    */
   public static function buildCSVToArray(string $csvText = null): array
   {
-    if (is_null($csvText))
-    {
-      throw new Exception( self::ERR_TEXT_IS_NULL);
+    if (is_null($csvText)) {
+      throw new Exception(self::ERR_TEXT_IS_NULL);
     }
 
-    return (new self( $csvText))->csvToArray();
+    return (new self($csvText))->csvToArray();
   }
 
   /**
+   * Apply callable to each character
    *
-   * @param $apply
+   * @param $callable
+   *
+   * @throws \Exception
    */
-  public function each($apply){
+  public function each($callable)
+  {
+    $currentValue = $this->get();
+    $newValue = '';
+    for ($i = 0; $i < $this->length(); $i++) {
+      $newValue .= $callable[$currentValue[$i]];
+    }
+    $this->set($newValue);
 
+    return;
   }
 
   /**
    * @param string $characters
-   * @param int           $length
+   * @param int    $length
    *
    * @return string
    */
   public static function random(string $characters, int $length): string
   {
     $result = '';
-    $lastIndex = strlen( $characters) - 1;
+    $lastIndex = strlen($characters) - 1;
 
-    for ($i = 0; $i < $length; $i++)
-    {
-      $index = mt_rand( 0, $lastIndex);
+    for ($i = 0; $i < $length; $i++) {
+      $index = mt_rand(0, $lastIndex);
       $result .= $characters[$index];
     }
 
@@ -452,7 +494,7 @@ class Text extends Atomic
    *
    * @return string
    */
-  public static function randomAlphaNumeric( int $length): string
+  public static function randomAlphaNumeric(int $length): string
   {
     return self::random(self::ALPHA_NUMERIC, $length);
   }
@@ -462,9 +504,9 @@ class Text extends Atomic
    *
    * @param string $string
    * @param string $chars
-   * @param bool $direction True for keep, false for delete
+   * @param bool   $direction True for keep, false for delete
    *
-   * @param bool $case_sensitive
+   * @param bool   $case_sensitive
    *
    * @return string
    *
