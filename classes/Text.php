@@ -21,11 +21,6 @@ class Text extends Atomic
   const LOWER_ALPHA_NUMERIC = '0123456789abcdefghijklmnopqrstuvwxyz';
 
   /**
-   * @var int
-   */
-  private $length;
-
-  /**
    * Constructor
    *
    * @param string $value
@@ -52,8 +47,6 @@ class Text extends Atomic
     }
 
     parent::set($value);
-
-    $this->length = strlen($this->get());
   }
 
   /**
