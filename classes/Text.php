@@ -360,7 +360,7 @@ class Text extends Atomic
       function ($value) {
         return trim($value);
       },
-      $this->aplly('trim')->split('/,/')
+      $this->apply('trim')->split('/,/')
     );
   }
 
@@ -449,11 +449,17 @@ class Text extends Atomic
    */
   public function each($callable)
   {
+    if (!is_callable($callable)){
+      throw new Exception('Not callable');
+    }
+
     $currentValue = $this->get();
     $newValue = '';
+
     for ($i = 0; $i < $this->length(); $i++) {
       $newValue .= $callable[$currentValue[$i]];
     }
+    
     $this->set($newValue);
 
     return;
