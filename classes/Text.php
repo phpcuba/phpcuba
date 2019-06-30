@@ -449,7 +449,7 @@ class Text extends Atomic
    */
   public function each($callable)
   {
-    if (!is_callable($callable)){
+    if (!is_callable($callable)) {
       throw new Exception('Not callable');
     }
 
@@ -459,13 +459,15 @@ class Text extends Atomic
     for ($i = 0; $i < $this->length(); $i++) {
       $newValue .= $callable[$currentValue[$i]];
     }
-    
+
     $this->set($newValue);
 
     return;
   }
 
   /**
+   * Random string
+   *
    * @param string $characters
    * @param int    $length
    *
