@@ -1,203 +1,331 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
+
 namespace PHPCuba;
 
-use \InvalidArgumentException;
-use IllegalStateException;
+use Exception;
 
 /**
- * Clase de manejo de texto
+ * Text processing
  *
- * @author lian
+ * @author @liancastellon
  */
-class Text
+class Text extends Atomic
 {
-  /**
-   * Error: Texto es null
-   */
   const ERR_TEXT_IS_NULL = 'Text is null';
-
-  /**
-   * @var string
-   */
-  private $value;
-
+  const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const LOWER_ALPHA_NUMERIC = '0123456789abcdefghijklmnopqrstuvwxyz';
   /**
    * @var int
    */
   private $length;
 
   /**
-   * @throws InvalidArgumentException Si el value es null.
+   * @param string $value
    */
-  public function __construct( string $value = '')
+  public function __construct(string $value = '')
   {
-    if ($value === null)
-    {
-      throw new InvalidArgumentException( self::ERR_TEXT_IS_NULL);
+    parent::__construct($value);
+  }
+
+  /**
+   * Set value
+   *
+   * @param string $value
+   *
+   * @throws \Exception
+   */
+  public function set($value)
+  {
+
+    if (!is_string($value)) {
+      throw new Exception("Value must be a string");
     }
 
-    $this->value = $value;
-    $this->length = strlen( $value);
+    parent::set($value);
+
+    $this->length = strlen($this->get());
   }
 
-  public static function from( $value): self
+  /**
+   *
+   * @param string $value
+   *
+   * @return \PHPCuba\Text
+   */
+  public static function instance(string $value): self
   {
-    return new self( SafeValue::string( $value));
+    return new self($value);
   }
 
+  /**
+   * To string
+   *
+   * @return string
+   */
   public function __toString(): string
   {
-    return $this->value;
+    return $this->get();
   }
 
+  /**
+   * Alias for __toString
+   *
+   * @return string
+   */
   public function asString(): string
   {
     return $this->__toString();
   }
 
+  /**
+   * Text length
+   *
+   * @return int
+   */
   public function length(): int
   {
     return $this->length;
   }
 
-  public function equals( Text $other): bool
+  /**
+   * Index of
+   *
+   * @param string $str
+   *
+   * @param bool   $caseSensitive
+   *
+   * @return int
+   */
+  public function indexOf(string $str, $caseSensitive = false): int
   {
-    return $this->asString() === $other->asString();
-  }
-
-  public function indexOf( string $str): int
-  {
-    $result = strpos( $this->value, $str);
+    if ($caseSensitive) {
+      $result = stripos($this->get(), $str);
+    }
+    else {
+      $result = strpos($this->get(), $str);
+    }
 
     return $result === false ? -1 : $result;
   }
 
-  public function lastIndexOf( string $str): int
+  /**
+   * Last index of
+   *
+   * @param string $str
+   *
+   * @return int
+   */
+  public function lastIndexOf(string $str): int
   {
-    $result = strrpos( $this->value, $str);
+    $result = strrpos($this->get(), $str);
 
     return $result === false ? -1 : $result;
   }
 
-  public function contains( string $subStr): bool
+  /**
+   * Contains substring
+   *
+   * @param string $subStr
+   *
+   * @return bool
+   */
+  public function contains(string $subStr): bool
   {
-    return $this->indexOf( $subStr) !== -1;
+    return $this->indexOf($subStr) !== -1;
   }
 
-  public function startsWith( string $prefix): bool
+  /**
+   *
+   * @param string $prefix
+   *
+   * @return bool
+   */
+  public function startsWith(string $prefix): bool
   {
-    return $this->indexOf( $prefix) === 0;
+    return $this->indexOf($prefix) === 0;
   }
 
-  public function endsWith( string $suffix): bool
+  /**
+   * @param string $suffix
+   *
+   * @return bool
+   */
+  public function endsWith(string $suffix): bool
   {
-    $index = $this->indexOf( $suffix);
-    $suffixLength = strlen( $suffix);
+    $index = $this->indexOf($suffix);
+    $suffixLength = strlen($suffix);
 
     return ($index === $this->length - $suffixLength);
   }
 
+  /**
+   * @return bool
+   */
   public function hasCommas(): bool
   {
-    return $this->contains( ',');
-  }
-
-  public function append( string $text): self
-  {
-    return self::from( "{$this->value}{$text}");
-  }
-
-  public function prepend( string $text): self
-  {
-    return self::from( "{$text}{$this->value}");
-  }
-
-  public function substring( int $start, int $length = null): self
-  {
-    if ($length === null)
-    {
-      $length = strlen( $this->value);
-    }
-
-    return self::from( substr( $this->value, $start, $length));
-  }
-
-  public function suffix( int $suffixLength): self
-  {
-    return $this->substring( $this->length() - $suffixLength);
-  }
-
-  public function replacePattern( string $pattern, string $replacement): self
-  {
-    return self::from( preg_replace( $pattern, $replacement, $this->value));
+    return $this->contains(',');
   }
 
   /**
-   * @throws IllegalStateException
+   * Append string
+   *
+   * @param string $text
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
    */
-  public function split( string $pattern): array
+  public function append(string $text): self
   {
-    $result = preg_split( $pattern, $this->value);
+    $this->set($this->get() . $text);
+    return $this;
+  }
 
-    if (is_bool( $result))
-    {
-      throw new IllegalStateException( 'Error en preg_split()');
+  /**
+   * Prepend text
+   *
+   * @param string $text
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function prepend(string $text): self
+  {
+    $this->set($text . $this->get());
+    return $this;
+  }
+
+  /**
+   * Cut string
+   *
+   * @param int      $start
+   * @param int|null $length
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function cutString(int $start, int $length = null): self
+  {
+    if ($length === null) {
+      $length = strlen($this->get());
+    }
+
+    $this->set(substr($this->get(), $start, $length));
+    return $this;
+  }
+
+  /**
+   * Cut text from length
+   *
+   * @param int $suffixLength
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function suffix(int $suffixLength): self
+  {
+    return $this->cutString($this->length() - $suffixLength);
+  }
+
+  /**
+   * @param string $pattern
+   * @param string $replacement
+   *
+   * @return \PHPCuba\Text
+   */
+  public function replacePattern(string $pattern, string $replacement): self
+  {
+    return self::instance(preg_replace($pattern, $replacement, $this->get()));
+  }
+
+  /**
+   * @param string $pattern
+   *
+   * @return array
+   * @throws \Exception
+   */
+  public function split(string $pattern): array
+  {
+    $result = preg_split($pattern, $this->get());
+
+    if (is_bool($result)) {
+      throw new Exception('Error in preg_split()');
     }
 
     return $result;
   }
 
-  public function stripPrefix( string $prefix): self
+  /**
+   * @param string $prefix
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function stripPrefix(string $prefix): self
   {
-    $result = $this;
-
-    if ($result->startsWith( $prefix))
-    {
-      $result = $this->substring( strlen( $prefix));
+    if ($this->startsWith($prefix)) {
+     return $this->cutString(strlen($prefix));
     }
 
-    return $result;
+    return $this;
   }
 
-  public function stripPrefixesRepeating( array $prefixes): self
+  /**
+   * Prefixes repeating
+   *
+   * @param array $prefixes
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function stripPrefixesRepeating(array $prefixes): self
   {
     $result = $this;
     $original = new Text();
 
-    while (!$result->equals( $original))
-    {
+    while (!$result->equals($original)) {
       $original = $result;
-      $prefixes = SafeValue::stringArray( $prefixes);
+      $prefixes = Type::forceArrayOfStrings($prefixes);
 
-      foreach ($prefixes as $prefix)
-      {
-        $result = $result->stripPrefix( $prefix);
+      foreach ($prefixes as $prefix) {
+        $result = $result->stripPrefix($prefix);
       }
     }
 
     return $result->trim();
   }
 
-  public function stripSuffix( string $suffix): self
+  /**
+   * Strip suffix
+   *
+   * @param string $suffix
+   *
+   * @return \PHPCuba\Text
+   */
+  public function stripSuffix(string $suffix): self
   {
     $result = $this;
 
-    if ($this->endsWith( $suffix))
-    {
-      $result = $this->substring( 0, $this->length - strlen( $suffix));
+    if ($this->endsWith($suffix)) {
+      $result = substr($this->get(), 0,$this->length - strlen($suffix));
     }
 
     return $result;
   }
 
-  public function ensureSuffix( string $suffix): self
+  /**
+   * @param string $suffix
+   *
+   * @return \PHPCuba\Text
+   * @throws \Exception
+   */
+  public function ensureSuffix(string $suffix): self
   {
     $result = $this;
 
-    if (!$this->endsWith( $suffix))
-    {
-      $result = $this->append( $suffix);
+    if (!$this->endsWith($suffix)) {
+      $result = $this->append($suffix);
     }
 
     return $result;
@@ -205,43 +333,176 @@ class Text
 
   public function trim(): self
   {
-    return self::from( trim( $this->value));
+    return self::instance(trim($this->get()));
   }
 
   public function csvToArray(): array
   {
     return array_map(
-      function( $value){
-        return trim( $value);
+      function ($value) {
+        return trim($value);
       },
-      $this->trim()->split( '/,/')
+      $this->trim()->split('/,/')
     );
   }
 
   public function decodeBase64(): self
   {
-    return self::from( base64_decode( $this->value));
+    return self::instance(base64_decode($this->get()));
   }
 
   /**
-   * @throws InvalidArgumentException
+   * Matches
+   *
+   * @param string $pattern
+   * @param array  $matches
+   *
+   * @return bool
+   * @throws \Exception
    */
-  public function matches( string $pattern, array &$matches): bool
+  public function match(string $pattern, array &$matches): bool
   {
-    $matchResult = preg_match( $pattern, $this->value, $matches);
+    $matchResult = preg_match($pattern, $this->get(), $matches);
 
-    if ($matchResult === false)
-    {
-      throw new InvalidArgumentException( "Error en expresión regular: '{$pattern}'");
+    if ($matchResult === false) {
+      throw new Exception("Error in regular expression: '{$pattern}'");
     }
 
     return $matchResult === 1;
   }
 
-  public function test( string $pattern): bool
+  /**
+   * Test string with pattern
+   *
+   * @param string $pattern
+   *
+   * @return bool
+   * @throws \Exception
+   */
+  public function testRegularExpression(string $pattern): bool
   {
     $matches = [];
 
-    return $this->matches( $pattern, $matches);
+    return $this->match($pattern, $matches);
+  }
+
+  /**
+   * Build with prefix
+   *
+   * @param string $text
+   * @param string $prefix
+   *
+   * @return bool
+   */
+  public static function buildWithPrefix(string $text, string $prefix): bool
+  {
+    return (new self($text))->startsWith($prefix);
+  }
+
+  /**
+   * Build CSV and convert to array
+   *
+   * @param string|null $csvText
+   *
+   * @return array
+   * @throws \Exception
+   */
+  public static function buildCSVToArray(string $csvText = null): array
+  {
+    if (is_null($csvText))
+    {
+      throw new Exception( self::ERR_TEXT_IS_NULL);
+    }
+
+    return (new self( $csvText))->csvToArray();
+  }
+
+  /**
+   *
+   * @param $apply
+   */
+  public function each($apply){
+
+  }
+
+  /**
+   * @param string $characters
+   * @param int           $length
+   *
+   * @return string
+   */
+  public static function random(string $characters, int $length): string
+  {
+    $result = '';
+    $lastIndex = strlen( $characters) - 1;
+
+    for ($i = 0; $i < $length; $i++)
+    {
+      $index = mt_rand( 0, $lastIndex);
+      $result .= $characters[$index];
+    }
+
+    return $result;
+  }
+
+  /**
+   * Random alpha numeric string
+   *
+   * @param int $length
+   *
+   * @return string
+   */
+  public static function randomAlphaNumeric( int $length): string
+  {
+    return self::random(self::ALPHA_NUMERIC, $length);
+  }
+
+  /**
+   * Clear string
+   *
+   * @param string $string
+   * @param string $chars
+   * @param bool $direction True for keep, false for delete
+   *
+   * @param bool $case_sensitive
+   *
+   * @return string
+   *
+   * @author @rafageist
+   */
+  public static function clear(string $string, string $chars, $direction = true, $case_sensitive = true): string
+  {
+    $l = strlen($string);
+    $new_str = '';
+
+    for ($i = 0; $i < $l; $i++) {
+      $ch = $string[$i];
+      if ($case_sensitive) {
+        if (strpos($chars, $ch) === $direction) {
+          $new_str .= $ch;
+        }
+      }
+      else {
+        if (stripos($chars, $ch) === $direction) {
+          $new_str .= $ch;
+        }
+      }
+    }
+
+    return $new_str;
+  }
+
+  /**
+   * Only alpha numeric
+   *
+   * @param        $string
+   * @param string $chars
+   * @param bool   $case_sensitive
+   *
+   * @return string
+   */
+  public static function onlyAlpha(string $string, string $chars = self::LOWER_ALPHA_NUMERIC, $case_sensitive = false): string
+  {
+    return self::clear($string, $chars, $case_sensitive);
   }
 }

@@ -53,4 +53,16 @@ class Atomic
   {
     return $this->value;
   }
+
+  /**
+   * Compare equals
+   *
+   * @param Text $other
+   *
+   * @return bool
+   */
+  public function equals(self $other): bool
+  {
+    return $this->value === $other->value;
+  }
 }
