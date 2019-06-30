@@ -53,52 +53,14 @@ class Text extends Atomic
   }
 
   /**
-   * To string
-   *
-   * @return string
-   */
-  public function __toString(): string
-  {
-    return $this->get();
-  }
-
-  /**
-   * Alias for __toString
-   *
-   * @return string
-   */
-  public function asString(): string
-  {
-    return $this->__toString();
-  }
-
-  /**
-   * Apply callable function to value
    *
    * @param $callable
    *
    * @return \PHPCuba\Text
    * @throws \Exception
    */
-  public function apply($callable)
-  {
-    if (!is_callable($callable)) {
-      throw new Exception('Not callable');
-    }
-
-    $this->set($callable($this->get()));
-
-    return $this;
-  }
-
-  /**
-   * Text length
-   *
-   * @return int
-   */
-  public function length(): int
-  {
-    return $this->length;
+  public function apply($callable): Text {
+    return Objects::cast(parent::apply($callable),'Text');
   }
 
   /**
