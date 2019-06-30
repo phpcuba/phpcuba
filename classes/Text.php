@@ -26,7 +26,11 @@ class Text extends Atomic
   private $length;
 
   /**
+   * Constructor
+   *
    * @param string $value
+   *
+   * @throws \Exception
    */
   public function __construct(string $value = '')
   {
@@ -380,6 +384,7 @@ class Text extends Atomic
    * @param string $prefix
    *
    * @return bool
+   * @throws \Exception
    */
   public static function buildWithPrefix(string $text, string $prefix): bool
   {
