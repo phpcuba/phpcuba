@@ -60,7 +60,7 @@ class Text extends Atomic
    * @throws \Exception
    */
   public function apply($callable): Text {
-    return Objects::cast(parent::apply($callable),'Text');
+    return Objects::cast(parent::apply($callable),self::class);
   }
 
   /**
@@ -202,23 +202,24 @@ class Text extends Atomic
     return $this->cutString($this->length() - $suffixLength);
   }
 
-  static function instance($value = null): self
-  {
-    return Objects::cast(parent::getInstance($value), self::class);
-  }
-
   /**
+   * Replace with pattern
+   *
    * @param string $pattern
    * @param string $replacement
    *
    * @return \PHPCuba\Text
+   * @throws \Exception
    */
   public function replacePattern(string $pattern, string $replacement): self
   {
-    return self::instance(preg_replace($pattern, $replacement, $this->get()));
+   $this->set(preg_replace($pattern, $replacement, $this->get()));
+   return $this;
   }
 
   /**
+   * Split
+   *
    * @param string $pattern
    *
    * @return array
