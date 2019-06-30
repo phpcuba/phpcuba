@@ -82,6 +82,10 @@ class Text extends Atomic
    */
   public function apply($callable)
   {
+    if (!is_callable($callable)) {
+      throw new Exception('Not callable');
+    }
+
     $this->set($callable($this->get()));
 
     return $this;
@@ -306,7 +310,7 @@ class Text extends Atomic
       }
     }
 
-    return $result->trim();
+    return $result->apply('trim');
   }
 
   /**
@@ -345,19 +349,6 @@ class Text extends Atomic
   }
 
   /**
-   * Trim
-   *
-   * @return \PHPCuba\Text
-   * @throws \Exception
-   */
-  public function trim(): self
-  {
-    $this->set(trim($this->get()));
-
-    return $this;
-  }
-
-  /**
    * CSV to array
    *
    * @return array
@@ -369,7 +360,7 @@ class Text extends Atomic
       function ($value) {
         return trim($value);
       },
-      $this->trim()->split('/,/')
+      $this->aplly('trim')->split('/,/')
     );
   }
 
