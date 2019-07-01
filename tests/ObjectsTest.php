@@ -5,98 +5,171 @@ namespace PHPCuba\Tests;
 use PHPCuba\Objects;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class TestClass
+ * Serialization of 'class@anonymous' is not allowed
+ *
+ * @package PHPCuba\Tests
+ */
+class TestClass
+{
+
+    protected $attrProtected;
+
+    private $attrPrivate;
+
+    public $attrPublic;
+
+    /**
+     * Get
+     *
+     * @return mixed
+     */
+    public function getAttrPrivate()
+    {
+        return $this->attrPrivate;
+    }
+
+    /**
+     * Set
+     *
+     * @param mixed $attrPrivate
+     */
+    public function setAttrPrivate($attrPrivate)
+    {
+        $this->attrPrivate = $attrPrivate;
+    }
+}
+
+/**
+ * Class ObjectsTest
+ *
+ * @package PHPCuba\Tests
+ */
 class ObjectsTest extends TestCase
 {
-    public function providerNonObjectValues()
+
+    /**
+     * Provider Non Object Values
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function providerNonObjectValues(): array
     {
         return [
-            [mt_rand(1, 10)],           // random integer
-            [boolval(mt_rand(0, 1))],   // random boolean
-            [uniqid()],                 // random string
-            [range(1, mt_rand(1, 10))], // random array
+            [random_int(1, 10)],           // random integer
+            [(bool)random_int(0, 1)],   // random boolean
+            [uniqid('', true)],                 // random string
+            [range(1, random_int(1, 10))], // random array
         ];
     }
 
     /**
+     * testGetAttributeThrownsAnExceptionWhenObjectArgumentIsNotAnObject
+     *
      * @expectedException \Exception
      * @expectedExceptionMessage Value of $object argument is not an object.
-     * @dataProvider providerNonObjectValues
+     * @dataProvider             providerNonObjectValues
+     *
+     * @param $value
+     *
+     * @throws \Exception
      */
     public function testGetAttributeThrownsAnExceptionWhenObjectArgumentIsNotAnObject($value)
     {
         Objects::getAttribute($value, 'attributeName');
     }
 
+    /**
+     * Test get public attributes
+     *
+     * @throws \Exception
+     */
     public function testGetAttributeReturnsPublicValues()
     {
-        $obj = new class {
-            public $attribute = 'secret';
-        };
-
-        $this->assertEquals('secret', Objects::getAttribute($obj, 'attribute'));
-    }
-
-    public function testGetAttributeReturnsPrivateValues()
-    {
-        $obj = new class {
-            private $attribute = 'secret';
-        };
-
-        $this->assertEquals('secret', Objects::getAttribute($obj, 'attribute'));
-    }
-
-    public function testGetAttributeReturnsProtectedValues()
-    {
-        $obj = new class {
-            protected $attribute = 'secret';
-        };
-
-        $this->assertEquals('secret', Objects::getAttribute($obj, 'attribute'));
+        $obj = new TestClass();
+        $this->assertEquals('secret', Objects::getAttribute($obj, 'attrPublic'));
     }
 
     /**
+     * Test get private values
+     *
+     * @throws \Exception
+     */
+    public function testGetAttributeReturnsPrivateValues()
+    {
+        $obj = new TestClass();
+        $this->assertEquals('secret', Objects::getAttribute($obj, 'attrPrivate'));
+    }
+
+    /**
+     * Test get protected values
+     *
+     * @throws \Exception
+     */
+    public function testGetAttributeReturnsProtectedValues()
+    {
+        $obj = new TestClass();
+        $this->assertEquals('secret', Objects::getAttribute($obj, 'attrProtected'));
+    }
+
+    /**
+     * Test set attribute
+     *
+     * @param mixed $value
+     *
      * @expectedException \Exception
      * @expectedExceptionMessage Value of $object argument is not an object.
-     * @dataProvider providerNonObjectValues
+     * @dataProvider             providerNonObjectValues
      */
     public function testSetAttributeThrownsAnExceptionWhenObjectArgumentIsNotAnObject($value)
     {
         Objects::setAttribute($value, 'attributeName', $value);
     }
 
+    /**
+     * testSetAttributeWithAPublicAttribute
+     *
+     * @throws \Exception
+     */
     public function testSetAttributeWithAPublicAttribute()
     {
-        $value = uniqid();
-        $obj = new class {
-            public $attribute;
-        };
-
-        Objects::setAttribute($obj, 'attribute', $value);
-
-        $this->assertAttributeEquals($value, 'attribute', $obj);
+        $this->commonTestSetAttribute('attrPublic');
     }
 
+    /**
+     * testSetAttributeWithAPrivateAttribute
+     *
+     * @throws \Exception
+     */
     public function testSetAttributeWithAPrivateAttribute()
     {
-        $value = uniqid();
-        $obj = new class {
-            private $attribute;
-        };
-
-        Objects::setAttribute($obj, 'attribute', $value);
-
-        $this->assertAttributeEquals($value, 'attribute', $obj);
+        $this->commonTestSetAttribute('attrPrivate');
     }
 
+    /**
+     * testSetAttributeWithAProtectedAttribute
+     *
+     * @throws \Exception
+     */
     public function testSetAttributeWithAProtectedAttribute()
     {
-        $value = uniqid();
-        $obj = new class {
-            protected $attribute;
-        };
+        $this->commonTestSetAttribute('attrProtected');
+    }
 
-        Objects::setAttribute($obj, 'attribute', $value);
-
-        $this->assertAttributeEquals($value, 'attribute', $obj);
+    /**
+     * Common test
+     *
+     * @param $attr
+     *
+     * @throws \Exception
+     */
+    private function commonTestSetAttribute($attr)
+    {
+        $value = uniqid('', true);
+        $obj = new TestClass();
+        Objects::setAttribute($obj, $attr, $value);
+        $this->assertContains(serialize($obj), '"'.$value.'"');
     }
 }
