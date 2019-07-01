@@ -39,6 +39,22 @@ class TestClass
     {
         $this->attrPrivate = $attrPrivate;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAttrProtected()
+    {
+        return $this->attrProtected;
+    }
+
+    /**
+     * @param mixed $attrProtected
+     */
+    public function setAttrProtected($attrProtected)
+    {
+        $this->attrProtected = $attrProtected;
+    }
 }
 
 /**
@@ -89,6 +105,7 @@ class ObjectsTest extends TestCase
     public function testGetAttributeReturnsPublicValues()
     {
         $obj = new TestClass();
+        $obj->attrPublic = 'secret';
         $this->assertEquals('secret', Objects::getAttribute($obj, 'attrPublic'));
     }
 
@@ -100,6 +117,7 @@ class ObjectsTest extends TestCase
     public function testGetAttributeReturnsPrivateValues()
     {
         $obj = new TestClass();
+        $obj->setAttrPrivate('secret');
         $this->assertEquals('secret', Objects::getAttribute($obj, 'attrPrivate'));
     }
 
@@ -111,6 +129,7 @@ class ObjectsTest extends TestCase
     public function testGetAttributeReturnsProtectedValues()
     {
         $obj = new TestClass();
+        $obj->setAttrProtected('secret');
         $this->assertEquals('secret', Objects::getAttribute($obj, 'attrProtected'));
     }
 
@@ -170,6 +189,7 @@ class ObjectsTest extends TestCase
         $value = uniqid('', true);
         $obj = new TestClass();
         Objects::setAttribute($obj, $attr, $value);
-        $this->assertContains(serialize($obj), '"'.$value.'"');
+        // $this->assertContains('"'.$value.'"', serialize($obj));
+        $this->assertEquals($value, Objects::getAttribute($obj, $attr));
     }
 }
