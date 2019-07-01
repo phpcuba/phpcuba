@@ -1,35 +1,43 @@
 {
-  "name": "phpcuba/phpcuba",
-  "description": "More functions for PHP",
-  "version": "1.0.3",
-  "keywords": [
-    "php",
-    "helpers",
-	"functions"
-  ],
-  "homepage": "https://phpcuba.org",
-  "license": [
-    "GPL-3.0-or-later"
-  ],
-  "authors": [
-    {
-      "name": "Rafa Rodriguez",
-      "email": "rafageist@hotmail.com",
-      "homepage": "https://rafageist.github.io",
-      "role": "Developer"
+    "name": "phpcuba/phpcuba",
+    "description": "More functions for PHP",
+    "version": "1.0.3",
+    "keywords": [
+        "php",
+        "helpers",
+        "functions"
+    ],
+    "homepage": "https://phpcuba.org",
+    "license": [
+        "GPL-3.0-or-later"
+    ],
+    "authors": [
+        {
+            "name": "Rafa Rodriguez",
+            "email": "rafageist@hotmail.com",
+            "homepage": "https://rafageist.github.io",
+            "role": "Developer"
+        },
+        {
+            "name": "PHPCuba Community",
+            "homepage": "https://phpcuba.org/"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "friendsofphp/php-cs-fixer": "^2.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPCuba\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PHPCuba\\Tests\\": "tests/"
+        }
     }
-  ],
-  "require": {
-    "php": ">=7.0.0"
-  },
-  "autoload": {
-    "classmap": [
-      "classes/"
-    ]
-  },
-  "autoload-dev": {
-    "classmap": [
-      "classes/"
-    ]
-  }
 }

@@ -1,2 +1,4 @@
 .idea
 test.php
+.php_cs.cache
+vendor/
