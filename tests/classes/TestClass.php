@@ -10,7 +10,6 @@ namespace PHPCuba\Tests;
  */
 class TestClass
 {
-
     protected $attrProtected;
 
     private $attrPrivate;
