@@ -20,7 +20,7 @@
         },
         {
             "name": "PHPCuba Community",
-            "homepage": "https://phpcuba.org/",
+            "homepage": "https://phpcuba.org/"
         }
     ],
     "require": {
