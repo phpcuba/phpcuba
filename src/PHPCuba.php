@@ -26,7 +26,7 @@ namespace PHPCuba;
  */
 class PHPCuba
 {
-    private static $version = '1.1.0';
+    private static $version = '1.1.1';
 
     /**
      * Version of lib
