@@ -5,7 +5,7 @@ Strengthen PHP with new functions.
 ## Installation
 
 ```
-composer require phpcuba\phpcuba;
+composer require phpcuba/phpcuba;
 ```
 
 ## Usage
