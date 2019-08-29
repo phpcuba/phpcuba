@@ -26,7 +26,7 @@ namespace PHPCuba;
  */
 class PHPCuba
 {
-    private static $version = "1.0.3";
+    private static $version = '1.1.0';
 
     /**
      * Version of lib
@@ -34,7 +34,7 @@ class PHPCuba
      * @return string
      * @author @rafageist
      */
-    public static function version()
+    public static function version(): string
     {
         return self::$version;
     }
