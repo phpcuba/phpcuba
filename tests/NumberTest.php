@@ -18,7 +18,7 @@ class NumberTest extends TestCase
      */
     public function testGetIntegerDigit(){
         $number = new Number(2567);
-        $digit = $number->getIntegerDigit(3);
+        $digit = $number->getDigitOfIntPart(3);
         $this->assertEquals($digit, 5);
     }
 }

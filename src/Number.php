@@ -67,8 +67,8 @@ class Number extends Atomic
      *
      * @return int
      */
-    public function getIntegerDigit(int $pos): int {
-        return self::getIntegerDigitOf($this->toInt(), $pos);
+    public function getDigitOfIntPart(int $pos): int {
+        return self::getDigitOfInt($this->toInt(), $pos);
     }
 
     /**
@@ -79,7 +79,7 @@ class Number extends Atomic
      *
      * @return int
      */
-    public static function getIntegerDigitOf(int $number, int $pos): int
+    public static function getDigitOfInt(int $number, int $pos): int
     {
         // example
         $integer = (int) $number;
